@@ -20,11 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import asr.proyectoFinal.dao.CloudantPalabraStore;
 import asr.proyectoFinal.dominio.Palabra;
+import asr.proyectoFinal.services.Traductor;
 
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(urlPatterns = {"/listar", "/insertar", "/hablar"})
+@WebServlet(urlPatterns = {"/listar", "/insertar", "/hablar", "/traducir"})
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +43,29 @@ public class Controller extends HttpServlet {
 					  out.println("No hay DB");
 				else
 					out.println("Palabras en la BD Cloudant:<br />" + store.getAll());
+				break;
+				
+			case "/traducir":
+				Palabra palabratraducir = new Palabra();
+				String parametrotraducir = request.getParameter("palabra");
+
+				if(parametrotraducir==null)
+				{
+					out.println("usage: /insertar?palabra=palabra_a_traducir");
+				}
+				else
+				{
+					if(store.getDB() == null) 
+					{
+						out.println(String.format("Palabra: %s", palabratraducir));
+					}
+					else
+					{
+						palabratraducir.setName(Traductor.translate(parametrotraducir));
+						store.persist(palabratraducir);
+					    out.println(String.format("Almacenada la palabra: %s", palabratraducir.getName()));			    	  
+					}
+				}
 				break;
 				
 			case "/insertar":
