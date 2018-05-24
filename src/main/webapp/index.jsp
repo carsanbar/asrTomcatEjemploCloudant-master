@@ -18,6 +18,8 @@
   <input type="text" name="palabra">
   <input type="submit" value="Guardar en Cloudant">
 </form></li>
+<li><a href="analyzer">Analizar</a></li>
+<li><a href="visual">voice</a></li>
 </ul>
 </body>
 </html>

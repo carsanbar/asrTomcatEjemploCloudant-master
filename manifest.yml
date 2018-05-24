@@ -9,3 +9,4 @@ applications:
   domain: eu-gb.mybluemix.net
   services:
   - asrCSBCloudantNoSQL
+  - texttovoicejc
