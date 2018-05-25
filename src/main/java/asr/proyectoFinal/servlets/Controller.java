@@ -3,6 +3,7 @@ package asr.proyectoFinal.servlets;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,20 +21,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifyOptions;
+import com.ibm.watson.developer_cloud.http.ServiceCall;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+//import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.BaseRecognizeCallback;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
+import com.ibm.watson.developer_cloud.text_to_speech.v1.model.AudioFormat;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
-import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice.*;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.util.WaveUtils;
+//import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
+//import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
+//import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
-import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
-import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifiedImages;
-import com.ibm.watson.developer_cloud.visual_recognition.v3.model.DetectFacesOptions;
-import com.ibm.watson.developer_cloud.visual_recognition.v3.model.DetectedFaces;
 
 import asr.proyectoFinal.dao.CloudantPalabraStore;
 import asr.proyectoFinal.dominio.Palabra;
@@ -65,76 +68,232 @@ public class Controller extends HttpServlet {
 			case "/analyzer":
 				ToneAnalyzer service = new ToneAnalyzer("2017-09-21");
 				service.setUsernameAndPassword("47a6432a-3fbd-41a6-828b-d3b03f387033", "Vq1UCIaSy1xl");
+				service.setEndPoint("https://gateway.watsonplatform.net/tone-analyzer/api");
 
 				String text = "Team, I know that times are tough! Product sales have "
-				    + "been disappointing for the past three quarters. We have a "
-				    + "competitive product, but we need to do a better job of selling it!";
+				    + "been disappointing for the past three quarters."
+				    + "I am happy";
 
 				    ToneOptions toneOptions = new ToneOptions.Builder().text(text).build();
 				    ToneAnalysis tone = service.tone(toneOptions).execute();
 				    System.out.println(tone);
+//				
+				
 				break;
 				
 			case "/visual":
-				System.out.println("1");
-				VisualRecognition servicevi = new VisualRecognition("2018-03-19");
-				System.out.println("2");
-				servicevi.setApiKey("27fff8ca8df4ffc25eba09bf6a07d328093c7be8");
-				System.out.println("3");
-
-				DetectFacesOptions detectFacesOptions = new DetectFacesOptions.Builder()
-				  .imagesFile(new File("C:\\Users\\Carlos\\Desktop\\obamasface.jpg"))
-				  .build();
-				System.out.println("4");
-				DetectedFaces result = servicevi.detectFaces(detectFacesOptions).execute();
-				System.out.println("5");
-				System.out.println(result);
+//				System.out.println("1");
+//				VisualRecognition servicevi = new VisualRecognition("2018-03-19");
+//				System.out.println("2");
+//				servicevi.setApiKey("27fff8ca8df4ffc25eba09bf6a07d328093c7be8");
+//				System.out.println("3");
+//
+//				DetectFacesOptions detectFacesOptions = new DetectFacesOptions.Builder()
+//				  .imagesFile(new File("C:\\Users\\Carlos\\Desktop\\obamasface.jpg"))
+//				  .build();
+//				System.out.println("4");
+//				DetectedFaces result = servicevi.detectFaces(detectFacesOptions).execute();
+//				System.out.println("5");
+//				System.out.println(result);
 				
 				
 				break;
 				
+			case "/visual2":
+//				VisualRecognition servicevi2 = new VisualRecognition("2018-03-19");
+//				servicevi2.setApiKey("{api-key}");
+//
+//				InputStream imagesStream = new FileInputStream("./fruitbowl.jpg");
+//				ClassifyOptions classifyOptions = new ClassifyOptions.Builder()
+//				  .imagesFile(imagesStream)
+//				  .imagesFilename("fruitbowl.jpg")
+//				  .threshold((float) 0.6)
+//				  .owners(Arrays.asList("me"))
+//				  .build();
+//				ServiceCall result2 = servicevi2.classify(classifyOptions).execute();
+//				System.out.println(result2);
+				break;
 				
-//			case "/text":
-//				SpeechToText servicet = new SpeechToText();
-//				servicet.setUsernameAndPassword("11248ba7-c13a-410d-be28-44c1bdfe7719", "IVOVQIA7RqlU");
-//
-//				RecognizeOptions options = new RecognizeOptions.Builder()
-//				  .contentType("audio/wav").timestamps(true)
-//				  .wordAlternativesThreshold(0.9)
-//				  .keywords(new String[]{"colorado", "tornado", "tornadoes"})
-//				  .keywordsThreshold(0.5).build();
-//
-//				String[] files = {"C:\\Users\\Carlos\\Downloads\\g3.wav"};
-//				for (String file : files) {
-//				  SpeechResults results = servicet.recognize(new File(file), options).execute();
-//				  System.out.println(results);
-//				}
-//				break;
+				
+			case "/text":
+				SpeechToText servicest = new SpeechToText();
+				servicest.setUsernameAndPassword("11248ba7-c13a-410d-be28-44c1bdfe7719", "IVOVQIA7RqlU");
+
+				RecognizeOptions options = new RecognizeOptions.Builder()
+				  .model("en-US_BroadbandModel").contentType("audio/wav")
+				  .interimResults(true).maxAlternatives(3)
+				  .keywords(new String[]{"colorado", "tornado", "tornadoes"})
+				  .keywordsThreshold(0.5).build();
+
+				BaseRecognizeCallback callback = new BaseRecognizeCallback() {
+				  @Override
+				  public void onTranscription(SpeechResults speechResults) {
+				    System.out.println(speechResults);
+				  }
+
+				  @Override
+				  public void onDisconnected() {
+				    System.exit(0);
+				  }
+				};
+
+				try {
+					servicest.recognizeUsingWebSocket
+				    (new FileInputStream("C:\\Users\\Carlos\\Downloads\\g6.wav"), options, callback);
+				}
+				catch (FileNotFoundException e) {
+				  e.printStackTrace();
+				}
+				
+				break;
 				
 			case "/voice":
-//				TextToSpeech servicev = new TextToSpeech();
-//				servicev.setUsernameAndPassword("1b818e6f-3e24-46d1-ac50-2898ec58f20e", "KDyURtkMMkG5");
+				TextToSpeech servicevoi = new TextToSpeech();
+				servicevoi.setUsernameAndPassword("1b818e6f-3e24-46d1-ac50-2898ec58f20e", "KDyURtkMMkG5");
+
+				try {
+				  String textovo = "Hello world";
+				  InputStream stream = servicevoi.synthesize(textovo, Voice.ES_LAURA,AudioFormat.WAV).execute();
+				  InputStream in = WaveUtils.reWriteWaveHeader(stream);
+				  OutputStream out3 = new FileOutputStream("hello_world.wav");
+				  byte[] buffer = new byte[1024];
+				  int length;
+				  while ((length = in.read(buffer)) > 0) {
+					  out3.write(buffer, 0, length);
+				  }
+				  out3.close();
+				  in.close();
+				  stream.close();
+				}
+				catch (Exception e) {
+				  e.printStackTrace();
+				}
+				
+				
+				
+//				TextToSpeech service = new TextToSpeech();
+//			    service.setUsernameAndPassword("1b818e6f-3e24-46d1-ac50-2898ec58f20e", "KDyURtkMMkG5");
 //
+//			    if(request.getParameter("language").equals("en")){
+//
+//			    String path = this.getServletContext().getRealPath("/")+"/Translate.wav";
+//			    File yourFile = new File(path);
+//			    yourFile.createNewFile(); // if file already exists will do nothing 
+//			      try {
+//			          String text = request.getParameter("palabra");
+//			          InputStream stream = service.synthesize(text, Voice.EN_ALLISON,AudioFormat.WAV).execute();
+//			          InputStream in = WaveUtils.reWriteWaveHeader(stream);
+//			          response.setContentType("audio/wav");
+//			          response.setHeader("Content-Disposition", "attachment;filename=Translate.wav");
+//			          response.setHeader("Pragma", "private");
+//			          response.setHeader("Cache-Control", "private, must-revalidate");
+//			          response.setHeader("Accept-Ranges", "bytes");
+//			          response.setContentLength((int) yourFile.length());
+//			          OutputStream output = response.getOutputStream();
+//
+//			          byte[] buffer = new byte[1024];
+//			          int length;
+//			          while ((length = in.read(buffer)) > 0) {
+//			            output.write(buffer, 0, length);
+//			          }
+//			          output.close();
+//			          in.close();
+//			          stream.close();
+//			        }
+//			        catch (Exception e) {
+//			          e.printStackTrace();
+//			        }
+//			      }else if(request.getParameter("language").equals("fr")){
+//
+//			          String path = this.getServletContext().getRealPath("/")+"/Traduction.wav";
+//			          File yourFile = new File(path);
+//			          yourFile.createNewFile(); // if file already exists will do nothing 
+//			          try {
+//			            String text = request.getParameter("palabra");
+//			            InputStream stream = service.synthesize(text, Voice.FR_RENEE,AudioFormat.WAV).execute();
+//			            InputStream in = WaveUtils.reWriteWaveHeader(stream);
+//			            response.setContentType("audio/wav");
+//			            response.setHeader("Content-Disposition", "attachment;filename=Traduction.wav");
+//			            response.setHeader("Pragma", "private");
+//			            response.setHeader("Cache-Control", "private, must-revalidate");
+//			            response.setHeader("Accept-Ranges", "bytes");
+//			            response.setContentLength((int) yourFile.length());
+//			            OutputStream output = response.getOutputStream();
+//
+//
+//			            byte[] buffer = new byte[1024];
+//			            int length;
+//			            while ((length = in.read(buffer)) > 0) {
+//			              output.write(buffer, 0, length);
+//			            }
+//			            output.close();
+//			            in.close();
+//			            stream.close();
+//			          }
+//			          catch (Exception e) {
+//			            e.printStackTrace();
+//			          }
+//			      }else if(request.getParameter("language").equals("es")){
+//			          String path = this.getServletContext().getRealPath("/")+"/Traduccion.wav";
+//			          File yourFile = new File(path);
+//			          yourFile.createNewFile(); // if file already exists will do nothing 
+//			          try {
+//			          String text = request.getParameter("palabra");
+//			          InputStream stream = service.synthesize(text, Voice.ES_LAURA,AudioFormat.WAV).execute();
+//			          InputStream in = WaveUtils.reWriteWaveHeader(stream);
+//			          response.setContentType("audio/wav");
+//			          response.setHeader("Content-Disposition", "attachment;filename=Traduccion.wav");
+//			          response.setHeader("Pragma", "private");
+//			          response.setHeader("Cache-Control", "private, must-revalidate");
+//			          response.setHeader("Accept-Ranges", "bytes");
+//			          response.setContentLength((int) yourFile.length());
+//			          OutputStream output = response.getOutputStream();
+//
+//
+//			          byte[] buffer = new byte[1024];
+//			          int length;
+//			          while ((length = in.read(buffer)) > 0) {
+//			            output.write(buffer, 0, length);
+//			          }
+//			          output.close();
+//			          in.close();
+//			          stream.close();
+//			        }
+//			        catch (Exception e) {
+//			          e.printStackTrace();
+//			        }
+//			      }
+				
+				//Irene
+				
+//				TextToSpeech serviceIre = new TextToSpeech();
+//				serviceIre.setUsernameAndPassword("1b818e6f-3e24-46d1-ac50-2898ec58f20e", "KDyURtkMMkG5");
+//						
+//				String audioName="";
 //				try {
-//				  String texto = "Hello world";
-//				  //InputStream stream = servicev.synthesize(texto, Voice.EN_ALLISON,AudioFormat.WAV).execute();
-////				  SynthesizeOptions option = new SynthesizeOptions(texto,Accept.AUDIO_WAV,"es-ES_LauraVoice","a");
-////				  InputStream stream = servicev.synthesize();
-//				  InputStream in = WaveUtils.reWriteWaveHeader(stream);
-//				  OutputStream outv = new FileOutputStream("hello_world.wav");
-//				  byte[] buffer = new byte[1024];
-//				  int length;
-//				  while ((length = in.read(buffer)) > 0) {
-//					  outv.write(buffer, 0, length);
-//				  }
-//				  outv.close();
-//				  in.close();
-//				  stream.close();
-//				}
-//				catch (Exception e) {
-//				  e.printStackTrace();
-//				}
-//				break;
+//					  String textIre = "hola";
+//					  InputStream in = serviceIre.synthesize(textIre, Voice.FR_RENEE, AudioFormat.WAV).execute();
+//					  audioName = "palabra_traducida.webm";
+//					  String appPath = request.getServletContext().getRealPath("");
+//					  String savepath = appPath + "audio";
+//					  System.out.println("PATH: "+savepath+"/"+audioName);
+//					  OutputStream outIre = new FileOutputStream(savepath+File.separator+audioName);
+//					  byte[] buffer = new byte[1024];
+//					  int length;
+//					  while ((length = in.read(buffer)) > 0) {
+//						  outIre.write(buffer, 0, length);
+//					  }
+//					  outIre.close();
+//					  in.close();
+//					}
+//					catch (Exception e) {
+//					  e.printStackTrace();
+//					}
+//				
+//				String audioIre = "audio/"+audioName; //out tiene que ser el audio resultado
+//				System.out.println(audioIre);
+//				//return audioIre;
+				break;
 //				
 				
 			case "/traducir":
