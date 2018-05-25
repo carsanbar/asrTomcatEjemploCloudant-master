@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -18,10 +21,18 @@
   <input type="text" name="palabra">
   <input type="submit" value="Guardar en Cloudant">
 </form></li>
+
 <li><a href="analyzer">Analizar un texto cualquiera</a></li>
-<li><a href="text">SpeechToText</a></li>
-<li><a href="voice">TexttoSpeech2</a></li>
-<li><a href="voice?language=en?palabra=hello">TexttoSpeechLuisTorres</a></li>
+
+<li><form action="speechtotext" enctype="multipart/form-data" method="POST">
+ Introducir audio
+  <input type="file" name="audio">
+  <input type="submit" value="audio">
+</form></li>
+
+${requestScope.sentimiento}
+${requestScope.audio}
+
 </ul>
 </body>
 </html>

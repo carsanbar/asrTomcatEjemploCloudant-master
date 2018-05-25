@@ -18,7 +18,7 @@ public class Traductor
 		TranslateOptions translateOptions = new
 		TranslateOptions.Builder()
 		.addText(palabra)
-		.modelId("es-en")
+		.modelId("en-es")
 		.build();
 		
 		TranslationResult translationResult =
@@ -32,9 +32,11 @@ public class Traductor
 		String wordCount = rootObj.get("word_count").getAsString();
 		JsonArray traducciones = rootObj.getAsJsonArray("translations");
 		String traduccionPrimera = palabra;
-		if(traducciones.size()>0)
-		traduccionPrimera =
-		traducciones.get(0).getAsJsonObject().get("translation").getAsString();
+		if(traducciones.size()>0) {
+			System.out.println(traducciones.size());
+			traduccionPrimera = traducciones.get(0).getAsJsonObject().get("translation").getAsString();
+			System.out.println(traduccionPrimera);
+		}
 		return traduccionPrimera;
 	}
 }
