@@ -14,6 +14,7 @@ import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -67,10 +68,13 @@ public class Controller extends HttpServlet {
 		switch(request.getServletPath())
 		{
 			case "/listar":
-				if(store.getDB() == null)
+				if(store.getDB() == null) {
 					  out.println("No hay DB");
-				else
-					out.println("Palabras en la BD Cloudant:<br />" + store.getAll());
+				}else {
+					Collection<Palabra> palabrasalmacenadas = store.getAll();
+					request.setAttribute("palabrasalmacenadas", palabrasalmacenadas);  
+					request.getRequestDispatcher("").forward(request, response);
+				}
 				break;
 				
 			case "/analyzer":
@@ -134,7 +138,9 @@ public class Controller extends HttpServlet {
 					{
 						palabratraducir.setName(Traductor.translate(parametrotraducir));
 						store.persist(palabratraducir);
-					    out.println(String.format("Almacenada la palabra: %s", palabratraducir.getName()));			    	  
+//					    out.println(String.format("Almacenada la palabra: %s", palabratraducir.getName()));			    	  
+						 request.setAttribute("palabratraducida", palabratraducir);  
+						request.getRequestDispatcher("").forward(request, response);
 					}
 				}
 				break;
@@ -157,7 +163,8 @@ public class Controller extends HttpServlet {
 					{
 						palabra.setName(parametro);
 						store.persist(palabra);
-					    out.println(String.format("Almacenada la palabra: %s", palabra.getName()));			    	  
+						 request.setAttribute("palabraaañadir", palabra);  
+							request.getRequestDispatcher("").forward(request, response);		    	  
 					}
 				}
 				break;
