@@ -38,8 +38,8 @@ import javax.servlet.ServletOutputStream;
  * Servlet implementation class Controller
  */
 
-@WebServlet(urlPatterns = {"/speechtotext"})
 @MultipartConfig
+@WebServlet(urlPatterns = {"/speechtotext"})
 public class Speechtotext extends HttpServlet {
   
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
@@ -49,14 +49,16 @@ public class Speechtotext extends HttpServlet {
 
     Part filePart = request.getPart("audio");
     
+//    Cogemos el contexto para la conexión servidor-cliente
+    
     String appPath = request.getServletContext().getRealPath("");
-	 // constructs path of the directory to save uploaded file
 	 String savePath = appPath + "audio";
-	 // creates the save directory if it does not exists
 	 File fileSaveDir = new File(savePath);
 	 if (!fileSaveDir.exists()) {
 	     fileSaveDir.mkdir();
 	 }
+	 
+	
 	 
 	 String savedFile = "";
 	
@@ -99,15 +101,11 @@ public class Speechtotext extends HttpServlet {
 		 {
 			 System.out.println(i);
 			 System.out.println(result.getResults().size());
-//			 System.out.println(result.getResults().get(i).getAlternatives().get(0).getTranscript());
 			 resultado = resultado.concat(result.getResults().get(i).getAlternatives().get(0).getTranscript());
 			 System.out.println(resultado);
 		 }
 	}
 		
-	
-     //SpeechResults speechResults = service.recognize(dest, options).execute();
-	
 	Palabra res = Analizador.analizador(resultado);
 	String res2 = res.toString();
 	
