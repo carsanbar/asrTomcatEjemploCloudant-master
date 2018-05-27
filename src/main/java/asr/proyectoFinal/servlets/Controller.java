@@ -53,7 +53,6 @@ import asr.proyectoFinal.services.Traductor;
 /**
  * Servlet implementation class Controller
  */
-@MultipartConfig
 @WebServlet(urlPatterns = {"/listar", "/insertar", "/traducir", "/analyzer"})
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -52,6 +52,7 @@ public class Speechtotext extends HttpServlet {
 //    Cogemos el contexto para la conexión servidor-cliente
     
     String appPath = request.getServletContext().getRealPath("");
+    System.out.println(appPath);
 	 String savePath = appPath + "audio";
 	 File fileSaveDir = new File(savePath);
 	 if (!fileSaveDir.exists()) {

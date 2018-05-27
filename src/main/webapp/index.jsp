@@ -125,7 +125,7 @@ function pageScroll() {
 
 
 <div>
-<form action="insertar">
+<form action="insertar" method="POST">
   <div class="input-group" >
     <span class="input-group-addon">Almacenar</span>
     <div style="width:23%">
@@ -145,7 +145,7 @@ function pageScroll() {
 
 
 	<div>
-		<form action="traducir">
+		<form action="traducir" method="POST">
 		  <div class="input-group">
 		    <span class="input-group-addon">Traducir</span>
 		    <div style="width:23%">
