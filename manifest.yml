@@ -1,11 +1,11 @@
 ---
 applications:
-- name: tomcatProyecto
+- name: tomcatProyectoasr
   random-route: true
-  path: target/asrTomcatEjemploCloudant.war
+  path: target/tomcatProyectoasr.war
   memory: 256M
   instances: 1
-  host: tomcatProyecto
+  host: tomcatProyectoasr
   domain: eu-gb.mybluemix.net
   services:
   - VozatextoJC
